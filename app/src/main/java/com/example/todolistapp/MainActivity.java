@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton mBtn_write;
     private ArrayList<Todoitem> mTodoItems;
     private DBHelper mDBHelper;
+    private CustomAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         mBtn_write = findViewById(R.id.btn_write);
         mTodoItems = new ArrayList<>();
 
+
+        loadRecentDB();
+
         mBtn_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,11 +56,35 @@ public class MainActivity extends AppCompatActivity {
                         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH::mm::ss").format(new Date());
                         mDBHelper.Insert(et_title.getText().toString(),et_content.getText().toString(),currentTime);
 
+
+                        Todoitem item = new Todoitem();
+                        item.setTitle(et_title.getText().toString());
+                        item.setContent(et_content.getText().toString());
+                        item.setWriteDate(currentTime);
+
+                        mAdapter.addItem(item);
+                        mRv_todo.smoothScrollToPosition(0);
+                        dialog.dismiss();
+                        Toast.makeText(MainActivity.this,"확인", Toast.LENGTH_SHORT).show();
                     }
                 });
+                dialog.show();
             }
         });
     }
+
+    private void loadRecentDB()
+    {
+        mTodoItems = mDBHelper.getTodoList();
+        if(mAdapter == null)
+        {
+            mAdapter = new CustomAdapter(mTodoItems, this);
+            mRv_todo.setHasFixedSize(true);
+            mRv_todo.setAdapter(mAdapter);
+
+        }
+    }
+
 
 
 }

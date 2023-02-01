@@ -64,16 +64,16 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO TodoList (title, content, writeDate) VALUES('" + _title + "','"+_content+"','" +_writeDate +"');");
     }
 
-    public void Update(String _title, String _content, String _writeDate, int _id)
+    public void Update(String _title, String _content, String _writeDate, String _beforeDate)
     {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE TodoList SET title ='" + _title + "', content='"+_content +"' , writeDate='" +_writeDate+"'WHERE id='" + _id+ "'");
+        db.execSQL("UPDATE TodoList SET title ='" + _title + "', content='"+_content +"' , writeDate='" +_writeDate+"'WHERE writeDate='" + _beforeDate+ "'");
     }
 
-    public void Delete(int _id)
+    public void Delete(String _beforeDate)
     {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM TodoList WHERE id = '" +_id + "'");
+        db.execSQL("DELETE FROM TodoList WHERE writeDate = '" +_beforeDate + "'");
     }
 
 }
