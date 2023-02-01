@@ -1,5 +1,6 @@
 package com.example.todolistapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -40,10 +41,10 @@ public class DBHelper extends SQLiteOpenHelper {
         {
             while(cursor.moveToNext())
             {
-                int id = cursor.getInt(cursor.getColumnIndex("id"));
-                String title = cursor.getString(cursor.getColumnIndex("title"));
-                String content = cursor.getString(cursor.getColumnIndex("content"));
-                String writeDate = cursor.getString(cursor.getColumnIndex("writeDate"));
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
+                @SuppressLint("Range") String content = cursor.getString(cursor.getColumnIndex("content"));
+                @SuppressLint("Range") String writeDate = cursor.getString(cursor.getColumnIndex("writeDate"));
 
                 Todoitem todoItem = new Todoitem();
                 todoItem.setId(id);
